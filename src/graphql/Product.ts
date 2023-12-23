@@ -1,5 +1,5 @@
 import { extendType, floatArg, nonNull, objectType, stringArg } from 'nexus';
-import { NexusGenFieldTypes } from '../../nexus-typegen';
+import { NexusGenFieldTypes } from '../nexus/nexus-typegen';
 import { randomUUID } from 'crypto';
 
 export const ProductType = objectType({
