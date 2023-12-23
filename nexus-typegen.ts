@@ -28,6 +28,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Mutation: {};
+  Product: { // root type
+    id: string; // ID!
+    name: string; // String!
+    price: number; // Float!
+  }
   Query: {};
 }
 
@@ -42,18 +48,40 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    createProduct: NexusGenRootTypes['Product']; // Product!
+  }
+  Product: { // field return type
+    id: string; // ID!
+    name: string; // String!
+    price: number; // Float!
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    getProducts: NexusGenRootTypes['Product'][]; // [Product!]!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Mutation: { // field return type name
+    createProduct: 'Product'
+  }
+  Product: { // field return type name
+    id: 'ID'
+    name: 'String'
+    price: 'Float'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    getProducts: 'Product'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createProduct: { // args
+      name: string; // String!
+      price: number; // Float!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
