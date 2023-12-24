@@ -1,6 +1,5 @@
 import { extendType, floatArg, nonNull, objectType, stringArg } from 'nexus';
-import { NexusGenFieldTypes } from '../../nexus-typegen';
-import { randomUUID } from 'crypto';
+import { ProductRepository } from '../database/repositories/product.repository';
 
 export const ProductType = objectType({
   name: 'Product',
@@ -9,25 +8,12 @@ export const ProductType = objectType({
   },
 });
 
-const products: NexusGenFieldTypes['Product'][] = [
-  {
-    id: randomUUID(),
-    name: 'Product 1',
-    price: 30.99,
-  },
-  {
-    id: randomUUID(),
-    name: 'Product 2',
-    price: 53.99,
-  },
-];
-
 export const getProductsQuery = extendType({
   type: 'Query',
   definition(t) {
     t.nonNull.list.nonNull.field('getProducts', {
       type: 'Product',
-      resolve: () => products,
+      resolve: async () => await ProductRepository.find(),
     });
   },
 });
@@ -42,13 +28,10 @@ export const createProductMutation = extendType({
         price: nonNull(floatArg()),
       },
       resolve: (_source, { name, price }) => {
-        const product: NexusGenFieldTypes['Product'] = {
-          id: randomUUID(),
+        const product = ProductRepository.save({
           name,
           price,
-        };
-
-        products.push(product);
+        });
         return product;
       },
     });
